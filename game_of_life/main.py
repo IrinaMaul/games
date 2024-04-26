@@ -1,4 +1,5 @@
-
+import random
+import time
 
                                            
 def findAllNeighbors(cells, row_index ,cells_index):
@@ -7,7 +8,7 @@ def findAllNeighbors(cells, row_index ,cells_index):
       if cells_index -1 >= 0 :
          n_left = cells[row_index][cells_index -1]
          if n_left=='x':
-          living_neighbors += 1  
+            living_neighbors += 1  
    #prüft, ob links ein nachbar ist
         
    #neighbor right 
@@ -76,7 +77,7 @@ def gameOfLife(original_cells):#leere zellen für die neu-Konfiguration der zell
    new_cells = lifeAndDeath(empty_cells, original_cells) 
    for row in new_cells:
        print(row)
-   return new_cells   #neue zellen für neue liste erstellt    
+   return new_cells #neue zellen für neue liste erstellt    
          
 def lifeAndDeath(new_cells, original_cells):         
    for row_index, row in enumerate(original_cells):#zählt die Positionen hoch
@@ -94,9 +95,9 @@ def lifeAndDeath(new_cells, original_cells):
             if neighbor == 2 or neighbor == 3 : #wenn eine zelle genau 2 oder 3 Nachbarn hat lebt sie weiter
                new_cells[row_index][cells_index] = 'x'   
             if neighbor > 3: #wenn eine zelle mehr als 3 nachbarn hat stirbt sie
-               new_cells[row_index][cells_index] = ' '
+               new_cells[row_index][cells_index] = ' '  
    return new_cells
-      
+
 def formatCells(cell_string):#unterscheidet die eingegebenen Charaktere um eine Liste zu erstellen
    result = [[]]
    row = 0
@@ -109,7 +110,15 @@ def formatCells(cell_string):#unterscheidet die eingegebenen Charaktere um eine 
          row = row + 1
          result.append([]) #neue liste (unten) hinzugefügt
    return result
-           
+
+def createCellString(number_of_elements):
+   cell_column_list = []
+   for i in range(number_of_elements):
+      cell_list = []
+      for i in range(number_of_elements):
+         cell_list.append(str(random.choice([' ', ' ', 'x'])))
+      cell_column_list.append(''.join(cell_list))
+   return ','.join(cell_column_list)
      
 #wenn (leer) dann in liste ' '
 #wenn , dann row+1
@@ -120,7 +129,9 @@ def main():
    # für anzahl generationen
    number_generations = int(input('Number of Generations:'))
    #eingabe der Liste x/'
-   cell_string = input('elements per row (space or x):')
+   number_of_elements = int(input('Field Size:'))
+   cell_string = createCellString(number_of_elements)
+   print("cell_string", cell_string)
    original_cells = formatCells(cell_string)
  
    print('start')
@@ -131,6 +142,8 @@ def main():
       print('Generation: ', number_generations + 1)
       #zählt die Nummern der generationen hoch
       original_cells = gameOfLife(original_cells)
+      time.sleep(1)
+
    print ('finish')   
    
 main()
